@@ -1,11 +1,15 @@
-﻿using System;
+﻿using Sdl2Test.Services;
+using System;
 
-namespace sdl2_test
+namespace Sdl2Test
 {
     class Program
     {
         static void Main(string[] args)
         {
+            var logger = LoggerFactory.GetLogger();
+            logger.Information("===== Запуск =====");
+
             int result;
             try
             {
@@ -13,6 +17,7 @@ namespace sdl2_test
             }
             catch (DllNotFoundException)
             {
+                logger.Error("Не найдена SDL2.dll в каталоге приложения.");
                 return;
             }
 
@@ -51,6 +56,7 @@ namespace sdl2_test
 
             SDL2.SDL.SDL_DestroyWindow(window);
             SDL2.SDL.SDL_Quit();
+            logger.Information("===== Останов =====");
         }
     }
 }
