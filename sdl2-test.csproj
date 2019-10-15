@@ -1,9 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <RootNamespace>sdl2_test</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <Target Name="CopySDL2Dll" BeforeTargets="BeforeBuild">
+    <Copy SourceFiles="$(ProjectDir)\Libs\SDL2\SDL2.dll" DestinationFolder="$(OutDir)" />
+  </Target>
 </Project>
