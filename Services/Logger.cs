@@ -39,6 +39,7 @@ namespace Sdl2Test.Services
             {
                 // В Windows параллельно логгируем в отладочную консоль.
                 configuration = configuration
+                    .MinimumLevel.Debug()
                     .WriteTo
                     .Debug(outputTemplate: LogFormat);
             }

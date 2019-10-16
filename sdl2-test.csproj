@@ -15,10 +15,6 @@
     <PackageReference Include="Serilog.Sinks.File" Version="4.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
-
   <Target Name="CopySDL2Dll" BeforeTargets="BeforeBuild">
     <Copy SourceFiles="$(ProjectDir)\Libs\SDL2\SDL2.dll" DestinationFolder="$(OutDir)" />
   </Target>
