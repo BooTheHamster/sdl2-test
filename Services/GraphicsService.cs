@@ -26,19 +26,30 @@ namespace Sdl2Test.Services
 
         public void Dispose()
         {
+            if (HasRender)
+            {
+                SDL.SDL_DestroyRenderer(renderer);
+            }
+
             if (HasWindow)
             {
                 SDL.SDL_DestroyWindow(window);
             }
 
+            SDL_image.IMG_Quit();
             SDL.SDL_Quit();
         }
 
         public bool TryInitialize()
         {
-            return InitializeSdl() 
+            var result = InitializeSdl() 
                 && CreateWindow()
                 && CreateRenderer();
+
+            var positiveTexture = SDL_image.IMG_Load("Assets/positive.png");
+            var negativeTexture = SDL_image.IMG_Load("Assets/negative.png");
+
+            return result;
         }
 
         public void Draw()
@@ -59,6 +70,7 @@ namespace Sdl2Test.Services
             try
             {
                 result = SDL.SDL_Init(SDL.SDL_INIT_EVERYTHING);
+
             }
             catch (DllNotFoundException)
             {
@@ -68,6 +80,15 @@ namespace Sdl2Test.Services
 
             if (result != 0)
             {
+                LogSdlError("Ошибка инциализации SDL");
+                return false;
+            }
+
+            result = SDL_image.IMG_Init(SDL_image.IMG_InitFlags.IMG_INIT_PNG);
+
+            if (((int)SDL_image.IMG_InitFlags.IMG_INIT_PNG & result) != (int)SDL_image.IMG_InitFlags.IMG_INIT_PNG)
+            {
+                LogSdlError("Ошибка инциализации SDL Image");
                 return false;
             }
 

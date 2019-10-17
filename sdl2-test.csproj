@@ -10,12 +10,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\negative.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\negative.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Serilog" Version="2.9.0" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="1.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="4.0.0" />
   </ItemGroup>
 
   <Target Name="CopySDL2Dll" BeforeTargets="BeforeBuild">
-    <Copy SourceFiles="$(ProjectDir)\Libs\SDL2\SDL2.dll" DestinationFolder="$(OutDir)" />
+    <ItemGroup>
+      <SdlDlls Include="$(ProjectDir)\Libs\SDL2\*.dll"></SdlDlls>
+    </ItemGroup>
+    <Copy SourceFiles="@(SdlDlls)" DestinationFolder="$(OutDir)" />
   </Target>
 </Project>
