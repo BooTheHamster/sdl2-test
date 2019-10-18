@@ -5,7 +5,7 @@ namespace Sdl2Test.Interfaces
     /// <summary>
     /// Графическая подсистема.
     /// </summary>
-    interface IGraphicsService : IDisposable
+    interface IGraphicsService : IDrawable, IDisposable
     {
         /// <summary>
         /// Инициализация графической подсистемы.
@@ -14,8 +14,12 @@ namespace Sdl2Test.Interfaces
         bool TryInitialize();
 
         /// <summary>
-        /// Отрисовка.
+        /// Создает спрайт.
         /// </summary>
-        void Draw();
+        /// <param name="width">Ширина спрайта в пикселях.</param>
+        /// <param name="height">Высота спрайта в пикселях.</param>
+        /// <param name="imageIdent">Идентификатор изображения спрайта.</param>
+        /// <returns>Спрайт.</returns>
+        ISprite CreateSprite(int width, int height, string imageIdent);
     }
 }

@@ -11,10 +11,14 @@
 
   <ItemGroup>
     <None Remove="Assets\negative.png" />
+    <None Remove="Assets\positive.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\negative.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\positive.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

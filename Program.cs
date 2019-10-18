@@ -10,10 +10,12 @@ namespace Sdl2Test
             var logger = LoggerFactory.GetLogger();
             logger.Information("===== Запуск =====");
 
-            using (var graphicsService = new GraphicsService(logger) as IGraphicsService)
+            using (IGraphicsService graphicsService = new GraphicsService(logger))
             {
                 if (graphicsService.TryInitialize())
                 {
+                    var positiveSprite = graphicsService.CreateSprite(100, 100, "positive");
+
                     var quit = false;
 
                     while (!quit)
