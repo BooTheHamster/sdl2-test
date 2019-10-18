@@ -1,4 +1,5 @@
-﻿using Sdl2Test.Interfaces;
+﻿using Sdl2Test.Core;
+using Sdl2Test.Interfaces;
 using Sdl2Test.Services;
 
 namespace Sdl2Test
@@ -10,11 +11,13 @@ namespace Sdl2Test
             var logger = LoggerFactory.GetLogger();
             logger.Information("===== Запуск =====");
 
+            var gameEngine = new GameEngine(logger);
+
             using (IGraphicsService graphicsService = new GraphicsService(logger))
             {
                 if (graphicsService.TryInitialize())
                 {
-                    var positiveSprite = graphicsService.CreateSprite(100, 100, "positive");
+                    var positiveSprite = graphicsService.CreateSprite(10, 10, "positive");
 
                     var quit = false;
 
@@ -29,6 +32,7 @@ namespace Sdl2Test
                             }
                         }
 
+                        gameEngine.Update();
                         graphicsService.Draw();
                     }
                 }
