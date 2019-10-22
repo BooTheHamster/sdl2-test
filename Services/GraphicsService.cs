@@ -101,11 +101,15 @@ namespace Sdl2Test.Services
                 return null;
             }
 
-            var sprite = new Sprite(0, 0, width, height, renderer, texture);
-            drawables.Add(sprite);
+            var sprite = new Sprite(width, height, renderer, texture);
             disposables.Add(sprite);
 
             return sprite;
+        }
+
+        public void Add(IDrawable drawable)
+        {
+            drawables.Add(drawable);
         }
 
         private bool InitializeSdl()

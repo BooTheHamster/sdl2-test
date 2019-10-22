@@ -21,5 +21,11 @@ namespace Sdl2Test.Interfaces
         /// <param name="imageIdent">Идентификатор изображения спрайта.</param>
         /// <returns>Спрайт.</returns>
         ISprite CreateSprite(int width, int height, string imageIdent);
+
+        /// <summary>
+        /// Добавление отрисовываемого объекта.
+        /// </summary>
+        /// <param name="drawable">Объект.</param>
+        void Add(IDrawable drawable);
     }
 }

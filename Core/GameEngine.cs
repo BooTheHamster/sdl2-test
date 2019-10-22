@@ -6,7 +6,7 @@ using SDL2;
 
 namespace Sdl2Test.Core
 {
-    class GameEngine
+    sealed public class GameEngine: IDisposable
     {
         private readonly IList<GameEntityState> entityStates = new List<GameEntityState>();
         private readonly ILogger logger;
@@ -22,7 +22,17 @@ namespace Sdl2Test.Core
             entityStates.Add(new GameEntityState(entity, lastUpdateTime));
         }
 
+        public void Dispose()
+        {
+            entityStates.Clear();
+        }
+
         public void Update()
+        {
+            MoveEntities();
+        }
+
+        private void MoveEntities()
         {
             var frequency = SDL.SDL_GetPerformanceFrequency() * 1.0d;
 

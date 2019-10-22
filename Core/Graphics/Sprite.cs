@@ -9,17 +9,12 @@ namespace Sdl2Test.Graphics
     /// </summary>
     sealed public class Sprite : ISprite
     {
-        private IntPtr renderer;
-        private IntPtr texture;
-
+        private readonly IntPtr renderer;
+        private readonly IntPtr texture;
         private bool HasTexture => texture != IntPtr.Zero;
-
-        private SDL.SDL_Rect rect;
         private SDL.SDL_Rect textureRect;
 
         public Sprite(
-            int x, 
-            int y, 
             int width, 
             int height,
             IntPtr renderer,
@@ -30,10 +25,6 @@ namespace Sdl2Test.Graphics
             textureRect.w = width;
             textureRect.h = height;
 
-            rect.x = x;
-            rect.y = y;
-            rect.w = width;
-            rect.h = height;
             this.renderer = renderer;
             this.texture = texture;
         }
@@ -46,8 +37,15 @@ namespace Sdl2Test.Graphics
             }
         }
 
-        public void Draw()
+        public void DrawAt(int x, int y)
         {
+            SDL.SDL_Rect rect;
+
+            rect.x = x;
+            rect.y = y;
+            rect.w = textureRect.w;
+            rect.h = textureRect.h;
+
             SDL.SDL_RenderCopy(renderer, texture, ref textureRect, ref rect);
         }
     }
