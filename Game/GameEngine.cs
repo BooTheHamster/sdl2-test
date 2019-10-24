@@ -3,7 +3,6 @@ using Sdl2Test.Interfaces;
 using Sdl2Test.Model;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 
@@ -13,7 +12,7 @@ namespace Sdl2Test.Game
     {
         private const int MinBlockSize = 3;
         private const int MaxBlockSize = 10;
-        private const double StartBlockVelocity = 0.2;
+        private const double StartBlockVelocity = 10;
 
         private readonly List<Block> positiveBlocks = new List<Block>();
         private readonly List<Block> negativeBlocks = new List<Block>();

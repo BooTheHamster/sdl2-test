@@ -1,5 +1,4 @@
 ﻿using Sdl2Test.Core.Interfaces;
-using Serilog;
 using System;
 using System.Collections.Generic;
 using SDL2;
@@ -27,22 +26,20 @@ namespace Sdl2Test.Core
 
             foreach (var es in entityStates)
             {
-                var entityState = es;
                 var currentCount = SDL.SDL_GetPerformanceCounter();
-                var elapsedTime = TimeSpan.FromMilliseconds((currentCount - entityState.LastUpdateCount) * 1000.0d / frequency);
+                var elapsedTime = TimeSpan.FromMilliseconds((currentCount - es.LastUpdateCount) * 1000.0d / frequency);
 
-                entityState.Entity.Update(elapsedTime);
-                entityState.LastUpdateCount = currentCount;
+                es.Entity.Update(elapsedTime);
+                es.LastUpdateCount = currentCount;
             }
         }
 
-        private struct GameEntityState
+        private class GameEntityState
         {
             public readonly IGameEntity Entity;
             public ulong LastUpdateCount;
 
             public GameEntityState(IGameEntity entity, ulong lastUpdateCount)
-                : this()
             {
                 Entity = entity;
                 LastUpdateCount = lastUpdateCount;
