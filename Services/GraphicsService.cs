@@ -4,6 +4,7 @@ using System;
 using SDL2;
 using Sdl2Test.Graphics;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace Sdl2Test.Services
 {
@@ -16,8 +17,9 @@ namespace Sdl2Test.Services
         private ISurfaceProvider surfaceProvider;
         private IntPtr window = IntPtr.Zero;
         private IntPtr renderer = IntPtr.Zero;
-        private IList<IDrawable> drawables = new List<IDrawable>();
-        private IList<IDisposable> disposables = new List<IDisposable>();
+        private readonly IList<IDrawable> drawables = new List<IDrawable>();
+        private readonly IList<IDisposable> disposables = new List<IDisposable>();
+        private Size windowSize = new Size();
 
         private bool HasWindow => window != IntPtr.Zero;
         private bool HasRender => renderer != IntPtr.Zero;
@@ -112,6 +114,11 @@ namespace Sdl2Test.Services
             drawables.Add(drawable);
         }
 
+        public Size GetWindowDimensions()
+        {
+            return new Size(windowSize.Width, windowSize.Height);
+        }
+
         private bool InitializeSdl()
         {
             int result;
@@ -153,17 +160,18 @@ namespace Sdl2Test.Services
                 return false;
             }
 
-            var width = (int) Math.Floor(displayMode.w * 0.3);
-            var height = (int) Math.Floor(displayMode.h * 0.7);
-            var x = (displayMode.w - width) / 2;
-            var y = (displayMode.h - height) / 2;
+
+            windowSize.Width = (int) Math.Floor(displayMode.w * 0.3);
+            windowSize.Height = (int) Math.Floor(displayMode.h * 0.7);
+            var x = (displayMode.w - windowSize.Width) / 2;
+            var y = (displayMode.h - windowSize.Height) / 2;
 
             window = SDL.SDL_CreateWindow(
                 windowTitle,
                 x,
                 y,
-                width,
-                height,
+                windowSize.Width,
+                windowSize.Height,
                 SDL.SDL_WindowFlags.SDL_WINDOW_SHOWN | SDL.SDL_WindowFlags.SDL_WINDOW_BORDERLESS);
 
             if (HasWindow)

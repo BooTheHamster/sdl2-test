@@ -1,4 +1,5 @@
 ﻿using Sdl2Test.Core;
+using Sdl2Test.Game;
 using Sdl2Test.Interfaces;
 using Sdl2Test.Model;
 using Sdl2Test.Services;
@@ -16,27 +17,11 @@ namespace Sdl2Test
             {
                 if (graphicsService.TryInitialize())
                 {
-                    var positiveSprite = graphicsService.CreateSprite(10, 10, "positive");
-                    var negativeSprite = graphicsService.CreateSprite(10, 10, "negative");
+                    var blockMoveEngine = new BlockMoveEngine();
+                    var gameEngine = new GameEngine(graphicsService, blockMoveEngine);
 
-                    using (var gameEngine = new GameEngine(logger))
+                    try
                     {
-                        var block = new Block(positiveSprite, 0, 0, 0, 0.1);
-                        gameEngine.Add(block);
-                        graphicsService.Add(block);
-
-                        block = new Block(positiveSprite, 20, 0, 0, 0.2);
-                        gameEngine.Add(block);
-                        graphicsService.Add(block);
-
-                        block = new Block(negativeSprite, 40, 0, 0, 0.05);
-                        gameEngine.Add(block);
-                        graphicsService.Add(block);
-
-                        block = new Block(negativeSprite, 60, 0, 0, 0.1);
-                        gameEngine.Add(block);
-                        graphicsService.Add(block);
-
 
                         var quit = false;
 
@@ -52,8 +37,11 @@ namespace Sdl2Test
                             }
 
                             gameEngine.Update();
-                            graphicsService.Draw();
                         }
+                    }
+                    finally
+                    {
+                        blockMoveEngine = null;
                     }
                 }
             }

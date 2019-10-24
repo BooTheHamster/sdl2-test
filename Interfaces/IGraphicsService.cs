@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Drawing;
 
 namespace Sdl2Test.Interfaces
 {
     /// <summary>
     /// Графическая подсистема.
     /// </summary>
-    interface IGraphicsService : IDrawable, IDisposable
+    public interface IGraphicsService : IDrawable, IDisposable
     {
         /// <summary>
         /// Инициализация графической подсистемы.
@@ -27,5 +28,11 @@ namespace Sdl2Test.Interfaces
         /// </summary>
         /// <param name="drawable">Объект.</param>
         void Add(IDrawable drawable);
+
+        /// <summary>
+        /// Возвращает текущие размеры окна приложения.
+        /// </summary>
+        /// <returns>Размеры окна.</returns>
+        Size GetWindowDimensions();
     }
 }

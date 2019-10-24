@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using Sdl2Test.Core.Model;
 using Sdl2Test.Interfaces;
 
@@ -20,6 +21,16 @@ namespace Sdl2Test.Model
         public double Y;
 
         /// <summary>
+        /// Ширина.
+        /// </summary>
+        public int Height;
+
+        /// <summary>
+        /// Высота.
+        /// </summary>
+        public int Width;
+
+        /// <summary>
         /// Скорость изменения координаты X в секунду.
         /// </summary>
         public double VelocityX;
@@ -31,10 +42,12 @@ namespace Sdl2Test.Model
 
         public Block(
             ISprite sprite,
-            double x = 0d,
-            double y = 0d,
-            double velocityX = 0d,
-            double velocityY = 0d)
+            double x,
+            double y,
+            int width,
+            int height,
+            double velocityX,
+            double velocityY)
             : base(sprite)
         {
             X = x;
@@ -43,6 +56,8 @@ namespace Sdl2Test.Model
             spriteY = (int)Math.Round(Y);
             VelocityX = velocityX;
             VelocityY = velocityY;
+            Width = width;
+            Height = height;
         }
 
         public override void Update(TimeSpan elapsedTime)
@@ -76,7 +91,8 @@ namespace Sdl2Test.Model
                 return;
             }
 
-            sprite.DrawAt(spriteX, spriteY);
+            var rect = new Rectangle(spriteX, spriteY, Width, Height);
+            sprite.Draw(rect);
         }
     }
 }

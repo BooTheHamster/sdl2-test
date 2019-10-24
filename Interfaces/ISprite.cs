@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace Sdl2Test.Interfaces
 {
@@ -8,10 +9,9 @@ namespace Sdl2Test.Interfaces
     public interface ISprite : IDisposable
     {
         /// <summary>
-        /// Отрисовывает спрайт в указанных координатах.
+        /// Отрисовывает спрайт.
         /// </summary>
-        /// <param name="x">Координата X в пикселях.</param>
-        /// <param name="y">Координата Y в пикселях.</param>
-        void DrawAt(int x, int y);
+        /// <param name="targetRectangle">Прямоугольник, задающий координаты и размеры области отрисовки спрайта.</param>
+        void Draw(Rectangle targetRectangle);
     }
 }

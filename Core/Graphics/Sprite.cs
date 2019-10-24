@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using SDL2;
 using Sdl2Test.Interfaces;
 
@@ -37,14 +38,14 @@ namespace Sdl2Test.Graphics
             }
         }
 
-        public void DrawAt(int x, int y)
+        public void Draw(Rectangle targetRectangle)
         {
             SDL.SDL_Rect rect;
 
-            rect.x = x;
-            rect.y = y;
-            rect.w = textureRect.w;
-            rect.h = textureRect.h;
+            rect.x = targetRectangle.X;
+            rect.y = targetRectangle.Y;
+            rect.w = targetRectangle.Width;
+            rect.h = targetRectangle.Height;
 
             SDL.SDL_RenderCopy(renderer, texture, ref textureRect, ref rect);
         }

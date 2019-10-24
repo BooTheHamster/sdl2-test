@@ -6,25 +6,14 @@ using SDL2;
 
 namespace Sdl2Test.Core
 {
-    sealed public class GameEngine: IDisposable
+    public sealed class BlockMoveEngine
     {
         private readonly IList<GameEntityState> entityStates = new List<GameEntityState>();
-        private readonly ILogger logger;
-
-        public GameEngine(ILogger logger)
-        {
-            this.logger = logger;
-        }
 
         public void Add(IGameEntity entity)
         {
             ulong lastUpdateTime = SDL.SDL_GetPerformanceCounter();
             entityStates.Add(new GameEntityState(entity, lastUpdateTime));
-        }
-
-        public void Dispose()
-        {
-            entityStates.Clear();
         }
 
         public void Update()
