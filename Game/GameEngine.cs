@@ -10,9 +10,9 @@ namespace Sdl2Test.Game
 {
     public sealed class GameEngine
     {
-        private const int MinBlockSize = 3;
-        private const int MaxBlockSize = 10;
-        private const double StartBlockVelocity = 10;
+        private const int MinBlockSize = 10;
+        private const int MaxBlockSize = 100;
+        private const double StartBlockVelocity = 50;
 
         private readonly List<Block> positiveBlocks = new List<Block>();
         private readonly List<Block> negativeBlocks = new List<Block>();
@@ -55,7 +55,7 @@ namespace Sdl2Test.Game
             {
                 var lastBlock = positiveBlocks.Last();
 
-                if ((lastBlock.Y - lastBlock.Height) < 0)
+                if (lastBlock.Y < 0)
                 {
                     // Самый верхний блок еще не видно целиком - нет необходимости добавлять следующий.
                     return;
@@ -63,7 +63,7 @@ namespace Sdl2Test.Game
             }
 
             var size = GetNewBlockDimensions();
-            var block = new Block(positiveSprite, 0, -size.Height, size.Width, size.Height, 0, StartBlockVelocity);
+            var block = new Block(positiveSprite, 0, -size.Height + 1, size.Width, size.Height, 0, StartBlockVelocity);
 
             positiveBlocks.Add(block);
             blockMoveEngine.Add(block);
