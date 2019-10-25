@@ -7,12 +7,12 @@ namespace Sdl2Test.Core
 {
     public sealed class BlockMoveEngine
     {
-        private readonly IList<GameEntityState> entityStates = new List<GameEntityState>();
+        private readonly IList<GameEntityState> _entityStates = new List<GameEntityState>();
 
         public void Add(IGameEntity entity)
         {
             ulong lastUpdateTime = SDL.SDL_GetPerformanceCounter();
-            entityStates.Add(new GameEntityState(entity, lastUpdateTime));
+            _entityStates.Add(new GameEntityState(entity, lastUpdateTime));
         }
 
         public void Update()
@@ -24,7 +24,7 @@ namespace Sdl2Test.Core
         {
             var frequency = SDL.SDL_GetPerformanceFrequency() * 1.0d;
 
-            foreach (var es in entityStates)
+            foreach (var es in _entityStates)
             {
                 var currentCount = SDL.SDL_GetPerformanceCounter();
                 var elapsedTime = TimeSpan.FromMilliseconds((currentCount - es.LastUpdateCount) * 1000.0d / frequency);

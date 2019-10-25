@@ -6,11 +6,11 @@ namespace Sdl2Test.Core.Model
 {
     public abstract class GameEntity : IGameEntity, IDrawable
     {
-        protected ISprite sprite;
+        protected ISprite _sprite;
 
         protected GameEntity(ISprite sprite)
         {
-            this.sprite = sprite;
+            this._sprite = sprite;
         }
 
         public abstract void Draw();

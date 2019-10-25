@@ -10,10 +10,12 @@ namespace Sdl2Test.Graphics
     /// </summary>
     sealed public class Sprite : ISprite
     {
-        private readonly IntPtr renderer;
-        private readonly IntPtr texture;
-        private bool HasTexture => texture != IntPtr.Zero;
-        private SDL.SDL_Rect textureRect;
+        private readonly IntPtr _renderer;
+        private readonly IntPtr _texture;
+
+        private SDL.SDL_Rect _textureRect;
+
+        private bool HasTexture => _texture != IntPtr.Zero;
 
         public Sprite(
             int width, 
@@ -21,20 +23,20 @@ namespace Sdl2Test.Graphics
             IntPtr renderer,
             IntPtr texture)
         {
-            textureRect.x = 0;
-            textureRect.y = 0;
-            textureRect.w = width;
-            textureRect.h = height;
+            _textureRect.x = 0;
+            _textureRect.y = 0;
+            _textureRect.w = width;
+            _textureRect.h = height;
 
-            this.renderer = renderer;
-            this.texture = texture;
+            _renderer = renderer;
+            _texture = texture;
         }
 
         public void Dispose()
         {
             if (HasTexture)
             {
-                SDL.SDL_DestroyTexture(texture);
+                SDL.SDL_DestroyTexture(_texture);
             }
         }
 
@@ -47,7 +49,7 @@ namespace Sdl2Test.Graphics
             rect.w = targetRectangle.Width;
             rect.h = targetRectangle.Height;
 
-            SDL.SDL_RenderCopy(renderer, texture, ref textureRect, ref rect);
+            SDL.SDL_RenderCopy(_renderer, _texture, ref _textureRect, ref rect);
         }
     }
 }

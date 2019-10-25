@@ -7,8 +7,8 @@ namespace Sdl2Test.Model
 {
     public class Block : GameEntity
     {
-        private int spriteX;
-        private int spriteY;
+        private int _spriteX;
+        private int _spriteY;
 
         /// <summary>
         /// Координата X.
@@ -52,8 +52,8 @@ namespace Sdl2Test.Model
         {
             X = x;
             Y = y;
-            spriteX = (int)Math.Round(X);
-            spriteY = (int)Math.Round(Y);
+            _spriteX = (int)Math.Round(X);
+            _spriteY = (int)Math.Round(Y);
             VelocityX = velocityX;
             VelocityY = velocityY;
             Width = width;
@@ -65,7 +65,7 @@ namespace Sdl2Test.Model
             X += VelocityX * elapsedTime.TotalSeconds;
             Y += VelocityY * elapsedTime.TotalSeconds;
 
-            if (sprite == null)
+            if (_sprite == null)
             {
                 return;
             }
@@ -73,26 +73,26 @@ namespace Sdl2Test.Model
             var newSpriteX = (int)Math.Round(X);
             var newSpriteY = (int)Math.Round(Y);
 
-            if (spriteX != newSpriteX)
+            if (_spriteX != newSpriteX)
             {
-                spriteX = newSpriteX;
+                _spriteX = newSpriteX;
             }
 
-            if (spriteY != newSpriteY)
+            if (_spriteY != newSpriteY)
             {
-                spriteY = newSpriteY;
+                _spriteY = newSpriteY;
             }
         }
 
         public override void Draw()
         {
-            if (sprite == null)
+            if (_sprite == null)
             {
                 return;
             }
 
-            var rect = new Rectangle(spriteX, spriteY, Width, Height);
-            sprite.Draw(rect);
+            var rect = new Rectangle(_spriteX, _spriteY, Width, Height);
+            _sprite.Draw(rect);
         }
     }
 }

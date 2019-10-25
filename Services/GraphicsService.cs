@@ -13,42 +13,42 @@ namespace Sdl2Test.Services
     /// </summary>
     sealed public class GraphicsService : IGraphicsService
     {
-        private readonly ILogger logger;
-        private ISurfaceProvider surfaceProvider;
-        private IntPtr window = IntPtr.Zero;
-        private IntPtr renderer = IntPtr.Zero;
-        private readonly IList<IDrawable> drawables = new List<IDrawable>();
-        private readonly IList<IDisposable> disposables = new List<IDisposable>();
-        private Size windowSize = new Size();
+        private readonly ILogger _logger;
+        private ISurfaceProvider _surfaceProvider;
+        private IntPtr _window = IntPtr.Zero;
+        private IntPtr _renderer = IntPtr.Zero;
+        private readonly IList<IDrawable> _drawables = new List<IDrawable>();
+        private readonly IList<IDisposable> _disposables = new List<IDisposable>();
+        private Size _windowSize = new Size();
 
-        private bool HasWindow => window != IntPtr.Zero;
-        private bool HasRender => renderer != IntPtr.Zero;
+        private bool HasWindow => _window != IntPtr.Zero;
+        private bool HasRender => _renderer != IntPtr.Zero;
 
         private bool CanDraw => HasWindow && HasRender;
 
         public GraphicsService(ILogger logger)
         {
-            this.logger = logger;
+            _logger = logger;
         }
 
         public void Dispose()
         {
-            foreach (var disposable in disposables)
+            foreach (var disposable in _disposables)
             {
                 disposable.Dispose();
             }
 
             if (HasRender)
             {
-                SDL.SDL_DestroyRenderer(renderer);
+                SDL.SDL_DestroyRenderer(_renderer);
             }
 
             if (HasWindow)
             {
-                SDL.SDL_DestroyWindow(window);
+                SDL.SDL_DestroyWindow(_window);
             }
 
-            surfaceProvider.Dispose();
+            _surfaceProvider.Dispose();
 
             SDL_image.IMG_Quit();
             SDL.SDL_Quit();
@@ -60,7 +60,7 @@ namespace Sdl2Test.Services
                 && CreateWindow()
                 && CreateRenderer();
 
-            surfaceProvider = new SurfaceProvider(logger);
+            _surfaceProvider = new SurfaceProvider(_logger);
 
             return result;
         }
@@ -72,15 +72,15 @@ namespace Sdl2Test.Services
                 return;
             }
 
-            SDL.SDL_SetRenderDrawColor(renderer, 0xcb, 0xc6, 0xaf, 0xff);
-            SDL.SDL_RenderClear(renderer);
+            SDL.SDL_SetRenderDrawColor(_renderer, 0xcb, 0xc6, 0xaf, 0xff);
+            SDL.SDL_RenderClear(_renderer);
 
-            foreach (var drawable in drawables)
+            foreach (var drawable in _drawables)
             {
                 drawable.Draw();
             }
 
-            SDL.SDL_RenderPresent(renderer);
+            SDL.SDL_RenderPresent(_renderer);
         }
 
         public ISprite CreateSprite(int width, int height, string imageIdent)
@@ -90,12 +90,12 @@ namespace Sdl2Test.Services
                 return null;
             }
 
-            if (!surfaceProvider.TryGetSurface(imageIdent, out IntPtr surface))
+            if (!_surfaceProvider.TryGetSurface(imageIdent, out IntPtr surface))
             {
                 return null;
             }
 
-            var texture = SDL.SDL_CreateTextureFromSurface(renderer, surface);
+            var texture = SDL.SDL_CreateTextureFromSurface(_renderer, surface);
 
             if (texture == IntPtr.Zero)
             {
@@ -103,20 +103,20 @@ namespace Sdl2Test.Services
                 return null;
             }
 
-            var sprite = new Sprite(width, height, renderer, texture);
-            disposables.Add(sprite);
+            var sprite = new Sprite(width, height, _renderer, texture);
+            _disposables.Add(sprite);
 
             return sprite;
         }
 
         public void Add(IDrawable drawable)
         {
-            drawables.Add(drawable);
+            _drawables.Add(drawable);
         }
 
         public Size GetWindowDimensions()
         {
-            return new Size(windowSize.Width, windowSize.Height);
+            return new Size(_windowSize.Width, _windowSize.Height);
         }
 
         private bool InitializeSdl()
@@ -161,17 +161,17 @@ namespace Sdl2Test.Services
             }
 
 
-            windowSize.Width = (int) Math.Floor(displayMode.w * 0.3);
-            windowSize.Height = (int) Math.Floor(displayMode.h * 0.7);
-            var x = (displayMode.w - windowSize.Width) / 2;
-            var y = (displayMode.h - windowSize.Height) / 2;
+            _windowSize.Width = (int) Math.Floor(displayMode.w * 0.3);
+            _windowSize.Height = (int) Math.Floor(displayMode.h * 0.7);
+            var x = (displayMode.w - _windowSize.Width) / 2;
+            var y = (displayMode.h - _windowSize.Height) / 2;
 
-            window = SDL.SDL_CreateWindow(
+            _window = SDL.SDL_CreateWindow(
                 windowTitle,
                 x,
                 y,
-                windowSize.Width,
-                windowSize.Height,
+                _windowSize.Width,
+                _windowSize.Height,
                 SDL.SDL_WindowFlags.SDL_WINDOW_SHOWN | SDL.SDL_WindowFlags.SDL_WINDOW_BORDERLESS);
 
             if (HasWindow)
@@ -185,7 +185,7 @@ namespace Sdl2Test.Services
 
         private bool CreateRenderer()
         {
-            renderer = SDL.SDL_CreateRenderer(window, -1, SDL.SDL_RendererFlags.SDL_RENDERER_ACCELERATED);
+            _renderer = SDL.SDL_CreateRenderer(_window, -1, SDL.SDL_RendererFlags.SDL_RENDERER_ACCELERATED);
 
             if (HasRender)
             {
@@ -198,8 +198,8 @@ namespace Sdl2Test.Services
 
         private void LogSdlError(string message)
         {
-            logger.Error(message);
-            logger.Error("Ошибка SDL: {0}", SDL.SDL_GetError());
+            _logger.Error(message);
+            _logger.Error("Ошибка SDL: {0}", SDL.SDL_GetError());
         }
     }
 }

@@ -14,46 +14,46 @@ namespace Sdl2Test.Game
         private const int MaxBlockSize = 100;
         private const double StartBlockVelocity = 50;
 
-        private readonly List<Block> positiveBlocks = new List<Block>();
-        private readonly List<Block> negativeBlocks = new List<Block>();
-        private readonly IGraphicsService graphicsService;
-        private readonly BlockMoveEngine blockMoveEngine;
-        private readonly ISprite positiveSprite;
-        private readonly ISprite negativeSprite;
-        private readonly Random random = new Random(Guid.NewGuid().GetHashCode());
+        private readonly List<Block> _positiveBlocks = new List<Block>();
+        private readonly List<Block> _negativeBlocks = new List<Block>();
+        private readonly IGraphicsService _graphicsService;
+        private readonly BlockMoveEngine _blockMoveEngine;
+        private readonly ISprite _positiveSprite;
+        private readonly ISprite _negativeSprite;
+        private readonly Random _random = new Random(Guid.NewGuid().GetHashCode());
 
         public GameEngine(
             IGraphicsService graphicsService, 
             BlockMoveEngine blockMoveEngine)
         {
-            this.graphicsService = graphicsService;
-            this.blockMoveEngine = blockMoveEngine;
+            this._graphicsService = graphicsService;
+            this._blockMoveEngine = blockMoveEngine;
 
-            positiveSprite = graphicsService.CreateSprite(10, 10, "positive");
-            negativeSprite = graphicsService.CreateSprite(10, 10, "negative");
+            _positiveSprite = graphicsService.CreateSprite(10, 10, "positive");
+            _negativeSprite = graphicsService.CreateSprite(10, 10, "negative");
         }
 
         public void Update()
         {
             CreateNewPositiveBlock();
 
-            blockMoveEngine.Update();
-            graphicsService.Draw();
+            _blockMoveEngine.Update();
+            _graphicsService.Draw();
         }
 
         private Size GetNewBlockDimensions()
         {
-            var width = random.Next(MinBlockSize, MaxBlockSize);
-            var height = random.Next(MinBlockSize, MaxBlockSize);
+            var width = _random.Next(MinBlockSize, MaxBlockSize);
+            var height = _random.Next(MinBlockSize, MaxBlockSize);
 
             return new Size(width, height);
         }
 
         private void CreateNewPositiveBlock()
         {
-            if (positiveBlocks.Count > 0)
+            if (_positiveBlocks.Count > 0)
             {
-                var lastBlock = positiveBlocks.Last();
+                var lastBlock = _positiveBlocks.Last();
 
                 if (lastBlock.Y < 0)
                 {
@@ -63,11 +63,11 @@ namespace Sdl2Test.Game
             }
 
             var size = GetNewBlockDimensions();
-            var block = new Block(positiveSprite, 0, -size.Height + 1, size.Width, size.Height, 0, StartBlockVelocity);
+            var block = new Block(_positiveSprite, 0, -size.Height + 1, size.Width, size.Height, 0, StartBlockVelocity);
 
-            positiveBlocks.Add(block);
-            blockMoveEngine.Add(block);
-            graphicsService.Add(block);
+            _positiveBlocks.Add(block);
+            _blockMoveEngine.Add(block);
+            _graphicsService.Add(block);
         }
     }
 }

@@ -11,35 +11,35 @@ namespace Sdl2Test.Services
     /// </summary>
     sealed public class SurfaceProvider : ISurfaceProvider
     {
-        private readonly ILogger logger;
-        private readonly IDictionary<string, IntPtr> textures = new Dictionary<string, IntPtr>();
+        private readonly ILogger _logger;
+        private readonly IDictionary<string, IntPtr> _textures = new Dictionary<string, IntPtr>();
 
         public SurfaceProvider(ILogger logger)
         {
-            this.logger = logger;
+            _logger = logger;
             LoadImages();
         }
 
         public bool TryGetSurface(string imageIdent, out IntPtr surface)
         {
-            if (textures.TryGetValue(imageIdent, out surface))
+            if (_textures.TryGetValue(imageIdent, out surface))
             {
                 return true;
             }
 
-            logger.Error("Не найдено изображение с идентификатором {textureIdent}", imageIdent);
+            _logger.Error("Не найдено изображение с идентификатором {textureIdent}", imageIdent);
             surface = IntPtr.Zero;
             return false;
         }
 
         public void Dispose()
         {
-            foreach (var surface in textures.Values)
+            foreach (var surface in _textures.Values)
             {
                 SDL.SDL_FreeSurface(surface);
             }
 
-            textures.Clear();
+            _textures.Clear();
         }
 
         private void LoadImages()
@@ -55,14 +55,14 @@ namespace Sdl2Test.Services
 
                 if (texture == IntPtr.Zero)
                 {
-                    logger.Error("Ошибка при загруке файла изображения {texturePath}. Текстура не создана.", texturePath);
+                    _logger.Error("Ошибка при загруке файла изображения {texturePath}. Текстура не создана.", texturePath);
                     continue;
                 }
 
                 var textureIndent = Path.GetFileNameWithoutExtension(texturePath);
-                logger.Debug("Загружено изображение \"{textureIndent}\" из {texturePath}", textureIndent, texturePath);
+                _logger.Debug("Загружено изображение \"{textureIndent}\" из {texturePath}", textureIndent, texturePath);
 
-                textures.Add(textureIndent, texture);
+                _textures.Add(textureIndent, texture);
             }
         }
     }

@@ -9,13 +9,14 @@ namespace Sdl2Test.Services
         private const string LogFileName = "log.txt";
         private const int LogFileSizeInBytes = 10 * 1024 * 1024;
         private const string LogFormat = "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}";
-        private static Serilog.Core.Logger logger;
+
+        private static Serilog.Core.Logger _logger;
 
         public static ILogger GetLogger()
         {
-            if (logger != null)
+            if (_logger != null)
             {
-                return logger;
+                return _logger;
             }
 
             var logFolderName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
@@ -44,8 +45,8 @@ namespace Sdl2Test.Services
                     .Debug(outputTemplate: LogFormat);
             }
 
-            logger = configuration.CreateLogger();
-            return logger;
+            _logger = configuration.CreateLogger();
+            return _logger;
         }
     }
 }
