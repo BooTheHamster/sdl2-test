@@ -30,6 +30,12 @@ namespace Sdl2Test.Interfaces
         void Add(IDrawable drawable);
 
         /// <summary>
+        /// Удаление отрисовываемого объекта.
+        /// </summary>
+        /// <param name="drawable">Объект.</param>
+        void Remove(IDrawable drawable);
+
+        /// <summary>
         /// Возвращает текущие размеры окна приложения.
         /// </summary>
         /// <returns>Размеры окна.</returns>

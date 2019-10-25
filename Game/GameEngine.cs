@@ -49,6 +49,10 @@ namespace Sdl2Test.Game
             CreateNewNegativeBlock();
 
             _blockMoveEngine.Update();
+
+            RemoveUnseenBottomBlocks(_positiveBlocks);
+            RemoveUnseenBottomBlocks(_negativeBlocks);
+
             _graphicsService.Draw();
         }
 
@@ -95,12 +99,31 @@ namespace Sdl2Test.Game
                 x = windowSize.Width - size.Width;
             }
 
-            var block = new Block(sprite, x, -size.Height + 2, size.Width, size.Height, 0, StartBlockVelocity);
+            var block = new Block(sprite, x, -size.Height - 2, size.Width, size.Height, 0, StartBlockVelocity);
 
             blocks.Add(block);
             _blockMoveEngine.Add(block);
             _graphicsService.Add(block);
         }
 
+        private void RemoveUnseenBottomBlocks(IList<Block> blocks)
+        {
+            if (blocks.Count == 0)
+            {
+                return;
+            }
+
+            // Самый первый блок в списке всегда самый нижний.
+            var bottomBlock = blocks.First();
+            var windowSize = _graphicsService.GetWindowDimensions();
+
+            if (bottomBlock.Y > windowSize.Height)
+            {
+                // TODO Пока блоки удаляются - реализовать реиспользование.
+                blocks.Remove(bottomBlock);
+                _blockMoveEngine.Remove(bottomBlock);
+                _graphicsService.Remove(bottomBlock);
+            }
+        }
     }
 }

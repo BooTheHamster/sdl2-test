@@ -7,12 +7,25 @@ namespace Sdl2Test.Core
 {
     public sealed class BlockMoveEngine
     {
-        private readonly IList<GameEntityState> _entityStates = new List<GameEntityState>();
+        private readonly object _lock = new object();
+        private readonly IDictionary<IGameEntity, GameEntityState> _entityStates = new Dictionary<IGameEntity, GameEntityState>();
 
         public void Add(IGameEntity entity)
         {
             ulong lastUpdateTime = SDL.SDL_GetPerformanceCounter();
-            _entityStates.Add(new GameEntityState(entity, lastUpdateTime));
+
+            lock (_lock)
+            {
+                _entityStates.Add(entity, new GameEntityState(entity, lastUpdateTime));
+            }
+        }
+
+        public void Remove(IGameEntity entity)
+        {
+            lock (_lock)
+            {
+                _entityStates.Remove(entity);
+            }
         }
 
         public void Update()
@@ -24,13 +37,16 @@ namespace Sdl2Test.Core
         {
             var frequency = SDL.SDL_GetPerformanceFrequency() * 1.0d;
 
-            foreach (var es in _entityStates)
+            lock (_lock)
             {
-                var currentCount = SDL.SDL_GetPerformanceCounter();
-                var elapsedTime = TimeSpan.FromMilliseconds((currentCount - es.LastUpdateCount) * 1000.0d / frequency);
+                foreach (var es in _entityStates.Values)
+                {
+                    var currentCount = SDL.SDL_GetPerformanceCounter();
+                    var elapsedTime = TimeSpan.FromMilliseconds((currentCount - es.LastUpdateCount) * 1000.0d / frequency);
 
-                es.Entity.Update(elapsedTime);
-                es.LastUpdateCount = currentCount;
+                    es.Entity.Update(elapsedTime);
+                    es.LastUpdateCount = currentCount;
+                }
             }
         }
 

@@ -114,6 +114,11 @@ namespace Sdl2Test.Services
             _drawables.Add(drawable);
         }
 
+        public void Remove(IDrawable drawable)
+        {
+            _drawables.Remove(drawable);
+        }
+
         public Size GetWindowDimensions()
         {
             return new Size(_windowSize.Width, _windowSize.Height);
