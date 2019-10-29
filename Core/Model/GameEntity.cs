@@ -10,7 +10,7 @@ namespace Sdl2Test.Core.Model
 
         protected GameEntity(ISprite sprite)
         {
-            this._sprite = sprite;
+            _sprite = sprite;
         }
 
         public abstract void Draw();

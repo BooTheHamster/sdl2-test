@@ -5,7 +5,7 @@ using SDL2;
 
 namespace Sdl2Test.Core
 {
-    public sealed class BlockMoveEngine
+    public sealed class GameEntityUpdateEngine
     {
         private readonly object _lock = new object();
         private readonly IDictionary<IGameEntity, GameEntityState> _entityStates = new Dictionary<IGameEntity, GameEntityState>();

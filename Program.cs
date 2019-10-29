@@ -1,7 +1,6 @@
 ﻿using Sdl2Test.Core;
 using Sdl2Test.Game;
 using Sdl2Test.Interfaces;
-using Sdl2Test.Model;
 using Sdl2Test.Services;
 
 namespace Sdl2Test
@@ -17,7 +16,7 @@ namespace Sdl2Test
             {
                 if (graphicsService.TryInitialize())
                 {
-                    var blockMoveEngine = new BlockMoveEngine();
+                    var blockMoveEngine = new GameEntityUpdateEngine();
                     var gameEngine = new GameEngine(graphicsService, blockMoveEngine);
 
                     try

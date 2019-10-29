@@ -13,6 +13,8 @@ namespace Sdl2Test.Services
     /// </summary>
     sealed public class GraphicsService : IGraphicsService
     {
+        private static readonly Color BackgroundColor = Color.Black;
+        private static readonly double DefaultSizePercent = 0.95;
         private readonly ILogger _logger;
         private ISurfaceProvider _surfaceProvider;
         private IntPtr _window = IntPtr.Zero;
@@ -72,7 +74,7 @@ namespace Sdl2Test.Services
                 return;
             }
 
-            SDL.SDL_SetRenderDrawColor(_renderer, 0xcb, 0xc6, 0xaf, 0xff);
+            SDL.SDL_SetRenderDrawColor(_renderer, BackgroundColor.R, BackgroundColor.G, BackgroundColor.B, BackgroundColor.A);
             SDL.SDL_RenderClear(_renderer);
 
             foreach (var drawable in _drawables)
@@ -165,9 +167,8 @@ namespace Sdl2Test.Services
                 return false;
             }
 
-
-            _windowSize.Width = (int) Math.Floor(displayMode.w * 0.3);
-            _windowSize.Height = (int) Math.Floor(displayMode.h * 0.7);
+            _windowSize.Width = (int) Math.Floor(displayMode.w * DefaultSizePercent);
+            _windowSize.Height = (int) Math.Floor(displayMode.h * DefaultSizePercent);
             var x = (displayMode.w - _windowSize.Width) / 2;
             var y = (displayMode.h - _windowSize.Height) / 2;
 

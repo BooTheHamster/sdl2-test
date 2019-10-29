@@ -29,6 +29,10 @@
     <PackageReference Include="Serilog.Sinks.File" Version="4.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Model\" />
+  </ItemGroup>
+
   <Target Name="CopySDL2Dll" BeforeTargets="BeforeBuild">
     <ItemGroup>
       <SdlDlls Include="$(ProjectDir)\Libs\SDL2\*.dll"></SdlDlls>
