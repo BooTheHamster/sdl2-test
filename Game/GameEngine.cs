@@ -6,11 +6,10 @@ namespace Sdl2Test.Game
 {
     public sealed class GameEngine
     {
-        private const double StartBlockVelocity = 50;
-
         private readonly IGraphicsService _graphicsService;
         private readonly GameEntityUpdateEngine _engine;
         private readonly Random _random = new Random(Guid.NewGuid().GetHashCode());
+        private readonly StarSpriteProvider _starSpriteProvider;
 
         public GameEngine(
             IGraphicsService graphicsService,
@@ -18,6 +17,8 @@ namespace Sdl2Test.Game
         {
             _graphicsService = graphicsService;
             _engine = engine;
+
+            _starSpriteProvider = new StarSpriteProvider(_graphicsService);
         }
 
         public void Update()
