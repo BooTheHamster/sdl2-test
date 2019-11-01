@@ -1,5 +1,5 @@
 ﻿using Sdl2Test.Interfaces;
-using Sdl2Test.Model;
+using Sdl2Test.Models;
 using System.Collections.Generic;
 
 namespace Sdl2Test.Game
@@ -25,6 +25,11 @@ namespace Sdl2Test.Game
             {
                 _starSprites.Add(spriteIdent.Key, graphicsService.CreateSprite(32, 32, spriteIdent.Value));
             }
+        }
+
+        public ISprite GetSprite(StarClass starClass)
+        {
+            return _starSprites[starClass];
         }
     }
 }

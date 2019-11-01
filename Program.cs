@@ -19,6 +19,8 @@ namespace Sdl2Test
                     var blockMoveEngine = new GameEntityUpdateEngine();
                     var gameEngine = new GameEngine(graphicsService, blockMoveEngine);
 
+                    gameEngine.CreateNew();
+
                     try
                     {
 

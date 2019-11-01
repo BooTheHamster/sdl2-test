@@ -1,4 +1,4 @@
-﻿namespace Sdl2Test.Model
+﻿namespace Sdl2Test.Models
 {
     public enum StarClass
     {

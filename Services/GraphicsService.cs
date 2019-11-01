@@ -14,7 +14,7 @@ namespace Sdl2Test.Services
     sealed public class GraphicsService : IGraphicsService
     {
         private static readonly Color BackgroundColor = Color.Black;
-        private static readonly double DefaultSizePercent = 0.95;
+        private const double DefaultSizePercent = 0.95;
         private readonly ILogger _logger;
         private ISurfaceProvider _surfaceProvider;
         private IntPtr _window = IntPtr.Zero;
@@ -22,11 +22,13 @@ namespace Sdl2Test.Services
         private readonly IList<IDrawable> _drawables = new List<IDrawable>();
         private readonly IList<IDisposable> _disposables = new List<IDisposable>();
         private Size _windowSize = new Size();
+        private Point _cameraPosition;
 
         private bool HasWindow => _window != IntPtr.Zero;
         private bool HasRender => _renderer != IntPtr.Zero;
-
         private bool CanDraw => HasWindow && HasRender;
+
+        public Rectangle DrawRectangle => throw new NotSupportedException();
 
         public GraphicsService(ILogger logger)
         {
@@ -63,11 +65,12 @@ namespace Sdl2Test.Services
                 && CreateRenderer();
 
             _surfaceProvider = new SurfaceProvider(_logger);
+            _cameraPosition = new Point(0, 0);
 
             return result;
         }
 
-        public void Draw()
+        public void DrawAll()
         {
             if (!CanDraw)
             {
@@ -79,7 +82,7 @@ namespace Sdl2Test.Services
 
             foreach (var drawable in _drawables)
             {
-                drawable.Draw();
+                drawable.Draw(this);
             }
 
             SDL.SDL_RenderPresent(_renderer);
@@ -124,6 +127,18 @@ namespace Sdl2Test.Services
         public Size GetWindowDimensions()
         {
             return new Size(_windowSize.Width, _windowSize.Height);
+        }
+
+        public void Draw(Rectangle drawRect, ISprite sprite)
+        {
+            var viewportRect = GetViewportRect();
+            if (!viewportRect.IntersectsWith(drawRect))
+            {
+                return;
+            }
+
+            drawRect.Offset(drawRect.X - viewportRect.X, drawRect.Y - viewportRect.Y);
+            sprite.Draw(drawRect);
         }
 
         private bool InitializeSdl()
@@ -206,6 +221,11 @@ namespace Sdl2Test.Services
         {
             _logger.Error(message);
             _logger.Error("Ошибка SDL: {0}", SDL.SDL_GetError());
+        }
+
+        private Rectangle GetViewportRect()
+        {
+            return new Rectangle(_cameraPosition.X, _cameraPosition.Y, _windowSize.Width, _windowSize.Height);
         }
     }
 }

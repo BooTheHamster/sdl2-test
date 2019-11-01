@@ -5,6 +5,10 @@
     /// </summary>
     public interface IDrawable
     {
-        void Draw();
+        /// <summary>
+        /// Отрисовка сущности.
+        /// </summary>
+        /// <param name="drawService">Сервис отрисовки сущностей.</param>
+        void Draw(IDrawService drawService);
     }
 }

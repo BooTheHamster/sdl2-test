@@ -13,7 +13,7 @@ namespace Sdl2Test.Core.Model
             _sprite = sprite;
         }
 
-        public abstract void Draw();
+        public abstract void Draw(IDrawService drawService);
 
         public abstract void Update(TimeSpan elapsedTime);
     }

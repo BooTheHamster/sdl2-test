@@ -6,7 +6,7 @@ namespace Sdl2Test.Interfaces
     /// <summary>
     /// Графическая подсистема.
     /// </summary>
-    public interface IGraphicsService : IDrawable, IDisposable
+    public interface IGraphicsService : IDrawService, IDisposable
     {
         /// <summary>
         /// Инициализация графической подсистемы.
@@ -34,6 +34,11 @@ namespace Sdl2Test.Interfaces
         /// </summary>
         /// <param name="drawable">Объект.</param>
         void Remove(IDrawable drawable);
+
+        /// <summary>
+        /// Отрисовка всех сущностей добавленных в подсистему.
+        /// </summary>
+        void DrawAll();
 
         /// <summary>
         /// Возвращает текущие размеры окна приложения.
