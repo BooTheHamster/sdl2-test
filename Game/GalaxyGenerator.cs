@@ -22,12 +22,15 @@ namespace Sdl2Test.Game
         {
             var result = new List<StarSystem>();
             var size = _galaxySizeToSizeMap[galaxySize];
-            var coordinates = new Point(
-                _random.Next(0, size.Width),
-                _random.Next(0, size.Height));
-            coordinates = new Point(0, 0);
 
-            result.Add(new StarSystem(coordinates, StarClass.NormalClassG));
+            for (var i = starSystemCount; i > 0; i--)
+            {
+                var coordinates = new Point(
+                    _random.Next(0, size.Width),
+                    _random.Next(0, size.Height));
+
+                result.Add(new StarSystem(coordinates, StarClass.NormalClassG));
+            }
 
             return result;
         }

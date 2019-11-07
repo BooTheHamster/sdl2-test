@@ -6,6 +6,9 @@ namespace Sdl2Test.Game
 {
     public class StarSpriteProvider
     {
+        private const int SpriteWidth = 16;
+        private const int SpriteHeight = 16;
+
         private readonly IDictionary<StarClass, string> _starSpriteIdents = new Dictionary<StarClass, string>()
         {
             { StarClass.NormalClassO, "o-class-star" },
@@ -23,7 +26,7 @@ namespace Sdl2Test.Game
         {
             foreach (var spriteIdent in _starSpriteIdents)
             {
-                _starSprites.Add(spriteIdent.Key, graphicsService.CreateSprite(32, 32, spriteIdent.Value));
+                _starSprites.Add(spriteIdent.Key, graphicsService.CreateSprite(SpriteWidth, SpriteHeight, spriteIdent.Value));
             }
         }
 

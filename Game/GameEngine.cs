@@ -26,7 +26,7 @@ namespace Sdl2Test.Game
 
         public void CreateNew()
         {
-            _galaxyStarSystems = _galaxyGenerator.CreateGalaxy(GalaxySize.XS, 10);
+            _galaxyStarSystems = _galaxyGenerator.CreateGalaxy(GalaxySize.M, 10);
 
             foreach (var starSystem in _galaxyStarSystems)
             {

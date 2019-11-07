@@ -9,10 +9,12 @@ namespace Sdl2Test.Drawables
     /// </summary>
     class StarSystemDrawable : IDrawable
     {
+        private const int SpriteWidth = 16;
+        private const int SpriteHeight = 16;
         private readonly StarSystem _starSystem;
         private readonly ISprite _sprite;
 
-        public Rectangle DrawRectangle => new Rectangle(_starSystem.Coordinates.X, _starSystem.Coordinates.Y, 32, 32);
+        public Rectangle DrawRectangle => new Rectangle(_starSystem.Coordinates.X, _starSystem.Coordinates.Y, SpriteWidth, SpriteHeight);
 
         public StarSystemDrawable(StarSystem starSystem, ISprite sprite)
         {
