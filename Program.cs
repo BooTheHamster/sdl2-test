@@ -17,7 +17,7 @@ namespace Sdl2Test
                 if (graphicsService.TryInitialize())
                 {
                     var blockMoveEngine = new GameEntityUpdateEngine();
-                    var gameEngine = new GameEngine(graphicsService, blockMoveEngine);
+                    var gameEngine = new GameEngine(graphicsService, blockMoveEngine, logger);
 
                     gameEngine.CreateNew();
 
