@@ -52,7 +52,10 @@ namespace Sdl2Test.Services
                 SDL.SDL_DestroyWindow(_window);
             }
 
-            _surfaceProvider.Dispose();
+            if (_surfaceProvider != null)
+            {
+                _surfaceProvider.Dispose();
+            }
 
             SDL_image.IMG_Quit();
             SDL.SDL_Quit();
@@ -60,14 +63,17 @@ namespace Sdl2Test.Services
 
         public bool TryInitialize()
         {
-            var result = InitializeSdl() 
-                && CreateWindow()
-                && CreateRenderer();
+            if (!InitializeSdl()
+                || !CreateWindow()
+                || !CreateRenderer())
+            {
+                return false;
+            }
 
             _surfaceProvider = new SurfaceProvider(_logger);
             _cameraPosition = new Point(0, 0);
 
-            return result;
+            return true;
         }
 
         public void DrawAll()

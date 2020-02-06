@@ -84,20 +84,7 @@ namespace Sdl2Test.Game
                     var coordinates = new Point(
                         _random.Next(_borderMargin, size.Width),
                         _random.Next(_borderMargin, size.Height));
-                    var hasNearest = false;
-                    do
-                    {
-                        hasNearest = starCoordinates.Any(sc =>
-                        {
-                            var distance = Math.Sqrt(
-                                Math.Pow(sc.X - coordinates.X, 2) +
-                                Math.Pow(sc.Y - coordinates.Y, 2));
-
-                            return distance < _minDistanceBetweenStarSystems;
-                        });
-
-                    } while (hasNearest);
-
+                        
                     starCoordinates.Enqueue(coordinates);
                 }
 
