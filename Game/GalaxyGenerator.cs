@@ -3,7 +3,6 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 
 namespace Sdl2Test.Game
 {
@@ -12,23 +11,23 @@ namespace Sdl2Test.Game
         /// <summary>
         /// Множители для определения минимального и максимального числа звездных систем в зависимости от размера галактики.
         /// </summary>
-        private const double _minStarSystemCountFactor = 0.0002;
-        private const double _maxStarSystemCountFactor = 0.0003;
+        private const double MinStarSystemCountFactor = 0.0002;
+        private const double MaxStarSystemCountFactor = 0.0003;
 
         /// <summary>
         /// Отступ от края в котором не создаются звездные системы.
         /// </summary>
-        private const int _borderMargin = 10;
+        private const int BorderMargin = 10;
 
         /// <summary>
         /// Минимальное расстояние между системами.
         /// </summary>
-        private const double _minDistanceBetweenStarSystems = 10.0;
+        private const double MinDistanceBetweenStarSystems = 10.0;
 
         /// <summary>
         /// Карта соответствия размера галактики и ее размера.
         /// </summary>
-        private static readonly IDictionary<GalaxySize, Size> _galaxySizeToSizeMap = new Dictionary<GalaxySize, Size>()
+        private static readonly IDictionary<GalaxySize, Size> GalaxySizeToSizeMap = new Dictionary<GalaxySize, Size>()
         {
             { GalaxySize.XS, new Size(100, 100) },
             { GalaxySize.S, new Size(200, 200) },
@@ -40,7 +39,7 @@ namespace Sdl2Test.Game
         /// <summary>
         /// Карта соответствия класса звезды звездной системы и процента ее на карте.
         /// </summary>
-        private static readonly IDictionary<StarClass, double> _starSystemClasses = new Dictionary<StarClass, double>()
+        private static readonly IDictionary<StarClass, double> StarSystemClasses = new Dictionary<StarClass, double>()
         {
             { StarClass.NormalClassO, 10 },
             { StarClass.NormalClassB, 10 },
@@ -51,29 +50,29 @@ namespace Sdl2Test.Game
             { StarClass.NormalClassM, 10 }
         };
 
-        private readonly Random _random = new Random(Guid.NewGuid().GetHashCode());
+        private readonly Random _random = new(Guid.NewGuid().GetHashCode());
 
         public IEnumerable<StarSystem> CreateGalaxy(GalaxySize galaxySize, ILogger logger)
         {
             var result = new List<StarSystem>();
-            var size = _galaxySizeToSizeMap[galaxySize];
-            var minStarSystemCount = (int)Math.Round(size.Width * size.Height * _minStarSystemCountFactor);
-            var maxStarSystemCount = (int)Math.Round(size.Width * size.Height * _maxStarSystemCountFactor);
+            var size = GalaxySizeToSizeMap[galaxySize];
+            var minStarSystemCount = (int)Math.Round(size.Width * size.Height * MinStarSystemCountFactor);
+            var maxStarSystemCount = (int)Math.Round(size.Width * size.Height * MaxStarSystemCountFactor);
             var allStarSystemCount = _random.Next(minStarSystemCount, maxStarSystemCount);
             var starSystemCounts = new Dictionary<StarClass, int>();
 
-            logger.Debug($"Создается {allStarSystemCount} звездных систем {{{minStarSystemCount}, {maxStarSystemCount}}}.");
+            logger.Debug("Создается {AllStarSystemCount} звездных систем {{{MinStarSystemCount}, {MaxStarSystemCount}}}", allStarSystemCount, minStarSystemCount, maxStarSystemCount);
 
             var total = 0;
-            foreach (var pair in _starSystemClasses)
+            foreach (var pair in StarSystemClasses)
             {
                 var count = (int) Math.Round(allStarSystemCount * pair.Value / 100.0);
                 total += count;
                 starSystemCounts.Add(pair.Key, count);
             }
 
-            size.Width -= _borderMargin;
-            size.Height -= _borderMargin;
+            size.Width -= BorderMargin;
+            size.Height -= BorderMargin;
 
             var starCoordinates = new Queue<Point>();
 
@@ -82,13 +81,13 @@ namespace Sdl2Test.Game
                 for (; total > 0 ; total--)
                 {
                     var coordinates = new Point(
-                        _random.Next(_borderMargin, size.Width),
-                        _random.Next(_borderMargin, size.Height));
+                        _random.Next(BorderMargin, size.Width),
+                        _random.Next(BorderMargin, size.Height));
                         
                     starCoordinates.Enqueue(coordinates);
                 }
 
-            } while (total > 0);
+            } while (false);
 
             foreach (var pair in starSystemCounts)
             {

@@ -9,7 +9,7 @@ namespace Sdl2Test.Game
         private const int SpriteWidth = 16;
         private const int SpriteHeight = 16;
 
-        private readonly IDictionary<StarClass, string> _starSpriteIdents = new Dictionary<StarClass, string>()
+        private readonly IDictionary<StarClass, string> _starSpriteIdents = new Dictionary<StarClass, string>
         {
             { StarClass.NormalClassO, "o-class-star" },
             { StarClass.NormalClassB, "b-class-star" },
@@ -20,7 +20,7 @@ namespace Sdl2Test.Game
             { StarClass.NormalClassM, "m-class-star" }
         };
 
-        private readonly IDictionary<StarClass, ISprite> _starSprites = new Dictionary<StarClass, ISprite>();
+        private readonly Dictionary<StarClass, ISprite> _starSprites = new();
 
         public StarSpriteProvider(IGraphicsService graphicsService)
         {

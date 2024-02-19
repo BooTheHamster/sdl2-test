@@ -7,24 +7,16 @@ namespace Sdl2Test.Drawables
     /// <summary>
     /// Отрисовка звездной системы.
     /// </summary>
-    class StarSystemDrawable : IDrawable
+    internal class StarSystemDrawable(StarSystem starSystem, ISprite sprite) : IDrawable
     {
         private const int SpriteWidth = 16;
         private const int SpriteHeight = 16;
-        private readonly StarSystem _starSystem;
-        private readonly ISprite _sprite;
 
-        public Rectangle DrawRectangle => new Rectangle(_starSystem.Coordinates.X, _starSystem.Coordinates.Y, SpriteWidth, SpriteHeight);
-
-        public StarSystemDrawable(StarSystem starSystem, ISprite sprite)
-        {
-            _starSystem = starSystem;
-            _sprite = sprite;
-        }
+        private Rectangle DrawRectangle => new(starSystem.Coordinates.X, starSystem.Coordinates.Y, SpriteWidth, SpriteHeight);
 
         public void Draw(IDrawService drawService)
         {
-            drawService.Draw(DrawRectangle, _sprite);
+            drawService.Draw(DrawRectangle, sprite);
         }
     }
 }

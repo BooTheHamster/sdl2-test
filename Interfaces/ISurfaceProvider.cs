@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sdl2Test.Services
+namespace Sdl2Test.Interfaces
 {
     /// <summary>
     /// Провайдер изображений для текстур.

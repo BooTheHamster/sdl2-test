@@ -13,7 +13,7 @@ namespace Sdl2Test.Game
         private readonly GameEntityUpdateEngine _engine;
         private readonly ILogger _logger;
         private readonly StarSpriteProvider _starSpriteProvider;
-        private readonly GalaxyGenerator _galaxyGenerator = new GalaxyGenerator();
+        private readonly GalaxyGenerator _galaxyGenerator = new();
         private IEnumerable<StarSystem> _galaxyStarSystems;
 
         public GameEngine(

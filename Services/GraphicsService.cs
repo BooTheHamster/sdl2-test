@@ -2,38 +2,30 @@
 using Serilog;
 using System;
 using SDL2;
-using Sdl2Test.Graphics;
 using System.Collections.Generic;
 using System.Drawing;
+using Sdl2Test.Core.Graphics;
 
 namespace Sdl2Test.Services
 {
     /// <summary>
     /// Графическая подсистема.
     /// </summary>
-    sealed public class GraphicsService : IGraphicsService
+    public sealed class GraphicsService(ILogger logger) : IGraphicsService
     {
         private static readonly Color BackgroundColor = Color.Black;
         private const double DefaultSizePercent = 0.95;
-        private readonly ILogger _logger;
         private ISurfaceProvider _surfaceProvider;
         private IntPtr _window = IntPtr.Zero;
         private IntPtr _renderer = IntPtr.Zero;
         private readonly IList<IDrawable> _drawables = new List<IDrawable>();
         private readonly IList<IDisposable> _disposables = new List<IDisposable>();
-        private Size _windowSize = new Size();
+        private Size _windowSize;
         private Point _cameraPosition;
 
         private bool HasWindow => _window != IntPtr.Zero;
         private bool HasRender => _renderer != IntPtr.Zero;
         private bool CanDraw => HasWindow && HasRender;
-
-        public Rectangle DrawRectangle => throw new NotSupportedException();
-
-        public GraphicsService(ILogger logger)
-        {
-            _logger = logger;
-        }
 
         public void Dispose()
         {
@@ -52,10 +44,7 @@ namespace Sdl2Test.Services
                 SDL.SDL_DestroyWindow(_window);
             }
 
-            if (_surfaceProvider != null)
-            {
-                _surfaceProvider.Dispose();
-            }
+            _surfaceProvider?.Dispose();
 
             SDL_image.IMG_Quit();
             SDL.SDL_Quit();
@@ -70,7 +59,7 @@ namespace Sdl2Test.Services
                 return false;
             }
 
-            _surfaceProvider = new SurfaceProvider(_logger);
+            _surfaceProvider = new SurfaceProvider(logger);
             _cameraPosition = new Point(0, 0);
 
             return true;
@@ -169,13 +158,14 @@ namespace Sdl2Test.Services
 
             result = SDL_image.IMG_Init(SDL_image.IMG_InitFlags.IMG_INIT_PNG);
 
-            if (((int)SDL_image.IMG_InitFlags.IMG_INIT_PNG & result) != (int)SDL_image.IMG_InitFlags.IMG_INIT_PNG)
+            if (((int)SDL_image.IMG_InitFlags.IMG_INIT_PNG & result) == (int)SDL_image.IMG_InitFlags.IMG_INIT_PNG)
             {
-                LogSdlError("Ошибка инциализации SDL Image");
-                return false;
+                return true;
             }
+            
+            LogSdlError("Ошибка инциализации SDL Image");
+            return false;
 
-            return true;
         }
 
         private bool CreateWindow()
@@ -225,8 +215,8 @@ namespace Sdl2Test.Services
 
         private void LogSdlError(string message)
         {
-            _logger.Error(message);
-            _logger.Error("Ошибка SDL: {0}", SDL.SDL_GetError());
+            logger.Error(message);
+            logger.Error("Ошибка SDL: {0}", SDL.SDL_GetError());
         }
 
         private Rectangle GetViewportRect()

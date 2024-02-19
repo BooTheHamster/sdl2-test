@@ -2,18 +2,12 @@
 
 namespace Sdl2Test.Models
 {
-    public class StarSystem
+    public class StarSystem(
+        Point coordinates,
+        StarClass starClass)
     {
-        public readonly Point Coordinates;
+        public readonly Point Coordinates = coordinates;
         
-        public readonly StarClass StarClass;
-
-        public StarSystem(
-            Point coordinates,
-            StarClass starClass)
-        {
-            Coordinates = coordinates;
-            StarClass = starClass;
-        }
+        public readonly StarClass StarClass = starClass;
     }
 }
