@@ -1,16 +1,15 @@
-﻿namespace Sdl2Test.Models
+﻿namespace Sdl2Test.Models;
+
+public enum StarClass
 {
-    public enum StarClass
-    {
-        NormalClassO = 0,
-        NormalClassB,
-        NormalClassA,
-        NormalClassF,
-        NormalClassG,
-        NormalClassK,
-        NormalClassM,
-        BrownDwarf,
-        WhiteDwarf,
-        RedGiant,
-    }
+    NormalClassO = 0,
+    NormalClassB,
+    NormalClassA,
+    NormalClassF,
+    NormalClassG,
+    NormalClassK,
+    NormalClassM,
+    BrownDwarf,
+    WhiteDwarf,
+    RedGiant,
 }

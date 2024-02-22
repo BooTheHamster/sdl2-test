@@ -17,7 +17,10 @@ namespace Sdl2Test.Game
             { StarClass.NormalClassF, "f-class-star" },
             { StarClass.NormalClassG, "g-class-star" },
             { StarClass.NormalClassK, "k-class-star" },
-            { StarClass.NormalClassM, "m-class-star" }
+            { StarClass.NormalClassM, "m-class-star" },
+            { StarClass.RedGiant, "red-giant-class-star" },
+            { StarClass.BrownDwarf, "brown-dwarf-class-star" },
+            { StarClass.WhiteDwarf, "white-dwarf-class-star" }
         };
 
         private readonly Dictionary<StarClass, ISprite> _starSprites = new();

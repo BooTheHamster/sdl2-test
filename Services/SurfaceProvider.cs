@@ -3,21 +3,21 @@ using System;
 using System.Collections.Generic;
 using SDL2;
 using System.IO;
-using Sdl2Test.Interfaces;
 
 namespace Sdl2Test.Services;
 
 /// <summary>
 /// Провайдер изображений для текстур.
 /// </summary>
-public sealed class SurfaceProvider : ISurfaceProvider
+internal sealed class SurfaceProvider : IDisposable
 {
     private readonly ILogger _logger;
-    private readonly IDictionary<string, IntPtr> _textures = new Dictionary<string, IntPtr>();
+    private readonly Dictionary<string, IntPtr> _textures = new();
 
     public SurfaceProvider(ILogger logger)
     {
         _logger = logger;
+
         LoadImages();
     }
 
@@ -28,7 +28,7 @@ public sealed class SurfaceProvider : ISurfaceProvider
             return true;
         }
 
-        _logger.Error("Не найдено изображение с идентификатором {textureIdent}", imageIdent);
+        _logger.Error("Texture {TextureIdent} not found", imageIdent);
         surface = IntPtr.Zero;
         return false;
     }
@@ -52,7 +52,8 @@ public sealed class SurfaceProvider : ISurfaceProvider
 
         if (!Directory.Exists(assetsPath))
         {
-            _logger.Error("");
+            _logger.Error("No assets path");
+            return;
         }
 
         foreach (var texturePath in Directory.GetFiles(assetsPath, "*.png", SearchOption.AllDirectories))
@@ -61,12 +62,12 @@ public sealed class SurfaceProvider : ISurfaceProvider
 
             if (texture == IntPtr.Zero)
             {
-                _logger.Error("Ошибка при загруке файла изображения {texturePath}. Текстура не создана.", texturePath);
+                _logger.Error("Texture {TexturePath} load error", texturePath);
                 continue;
             }
 
             var textureIndent = Path.GetFileNameWithoutExtension(texturePath);
-            _logger.Debug("Загружено изображение \"{textureIndent}\" из {texturePath}", textureIndent, texturePath);
+            _logger.Debug("Loaded texture \"{TextureIndent}\" from file {TexturePath}", textureIndent, texturePath);
 
             _textures.Add(textureIndent, texture);
         }

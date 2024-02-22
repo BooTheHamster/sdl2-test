@@ -1,53 +1,55 @@
-﻿using Sdl2Test.Core;
+﻿using System;
+using Sdl2Test.Core;
 using Sdl2Test.Game;
-using Sdl2Test.Interfaces;
 using Sdl2Test.Services;
 
-namespace Sdl2Test
+namespace Sdl2Test;
+
+// ReSharper disable once ClassNeverInstantiated.Global
+internal class Program
 {
-    class Program
+    private static void Main(string[] args)
     {
-        static void Main(string[] args)
+        var logger = LoggerFactory.GetLogger();
+        logger.Information("===== Start =====");
+
+        using (var graphicsService = new GraphicsService(logger))
         {
-            var logger = LoggerFactory.GetLogger();
-            logger.Information("===== Запуск =====");
-
-            using (IGraphicsService graphicsService = new GraphicsService(logger))
+            if (graphicsService.TryInitialize())
             {
-                if (graphicsService.TryInitialize())
+                var moveEngine = new GameEntityUpdateEngine();
+                var gameEngine = new GameEngine(graphicsService, moveEngine);
+
+                gameEngine.CreateNew();
+
+                try
                 {
-                    var blockMoveEngine = new GameEntityUpdateEngine();
-                    var gameEngine = new GameEngine(graphicsService, blockMoveEngine, logger);
 
-                    gameEngine.CreateNew();
+                    var quit = false;
 
-                    try
+                    while (!quit)
                     {
-
-                        var quit = false;
-
-                        while (!quit)
+                        while (SDL2.SDL.SDL_PollEvent(out var sdlEvent) != 0)
                         {
-                            while (SDL2.SDL.SDL_PollEvent(out SDL2.SDL.SDL_Event sdlEvent) != 0)
+                            if (sdlEvent.type != SDL2.SDL.SDL_EventType.SDL_QUIT)
                             {
-                                if (sdlEvent.type == SDL2.SDL.SDL_EventType.SDL_QUIT)
-                                {
-                                    quit = true;
-                                    break;
-                                }
+                                continue;
                             }
-
-                            gameEngine.Update();
+                            
+                            quit = true;
+                            break;
                         }
-                    }
-                    finally
-                    {
-                        blockMoveEngine = null;
+
+                        gameEngine.Update();
                     }
                 }
+                catch (Exception error)
+                {
+                    logger.Error(error, "Unknown error");
+                }
             }
-
-            logger.Information("===== Останов =====");
         }
+
+        logger.Information("===== Stopped =====");
     }
 }

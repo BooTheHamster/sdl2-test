@@ -15,18 +15,18 @@ namespace Sdl2Test.Services
     {
         private static readonly Color BackgroundColor = Color.Black;
         private const double DefaultSizePercent = 0.95;
-        private ISurfaceProvider _surfaceProvider;
+        private SurfaceProvider _surfaceProvider;
         private IntPtr _window = IntPtr.Zero;
         private IntPtr _renderer = IntPtr.Zero;
-        private readonly IList<IDrawable> _drawables = new List<IDrawable>();
-        private readonly IList<IDisposable> _disposables = new List<IDisposable>();
+        private readonly List<IDrawable> _drawables = [];
+        private readonly List<IDisposable> _disposables = [];
         private Size _windowSize;
         private Point _cameraPosition;
 
         private bool HasWindow => _window != IntPtr.Zero;
         private bool HasRender => _renderer != IntPtr.Zero;
         private bool CanDraw => HasWindow && HasRender;
-
+        
         public void Dispose()
         {
             foreach (var disposable in _disposables)
@@ -99,7 +99,7 @@ namespace Sdl2Test.Services
 
             if (texture == IntPtr.Zero)
             {
-                LogSdlError($"Ошибка при создании текстуры {imageIdent}");
+                LogSdlError($"SDL_CreateTextureFromSurface {imageIdent}");
                 return null;
             }
 
@@ -132,7 +132,6 @@ namespace Sdl2Test.Services
                 return;
             }
 
-            drawRect.Offset(drawRect.X - viewportRect.X, drawRect.Y - viewportRect.Y);
             sprite.Draw(drawRect);
         }
 
@@ -146,13 +145,13 @@ namespace Sdl2Test.Services
             }
             catch (DllNotFoundException)
             {
-                LogSdlError("Не найдена SDL2.dll в каталоге приложения.");
+                LogSdlError("SDL2 dynamic library not found");
                 return false;
             }
 
             if (result != 0)
             {
-                LogSdlError("Ошибка инциализации SDL");
+                LogSdlError("SDL_Init");
                 return false;
             }
 
@@ -163,7 +162,7 @@ namespace Sdl2Test.Services
                 return true;
             }
             
-            LogSdlError("Ошибка инциализации SDL Image");
+            LogSdlError("IMG_Init");
             return false;
 
         }
@@ -174,7 +173,7 @@ namespace Sdl2Test.Services
 
             if (SDL.SDL_GetDesktopDisplayMode(0, out SDL.SDL_DisplayMode displayMode) != 0)
             {
-                LogSdlError("Ошибка получения режима работы экрана.");
+                LogSdlError("SDL_GetDesktopDisplayMode");
                 return false;
             }
 
@@ -196,7 +195,7 @@ namespace Sdl2Test.Services
                 return true;
             }
 
-            LogSdlError("Ошибка при создании окна SDL.");
+            LogSdlError("SDL_CreateWindow");
             return false;
         }
 
@@ -209,14 +208,13 @@ namespace Sdl2Test.Services
                 return true;
             }
 
-            LogSdlError("Ошибка при создании рендерера SDL.");
+            LogSdlError("SDL_CreateRenderer");
             return false;
         }
 
         private void LogSdlError(string message)
         {
-            logger.Error(message);
-            logger.Error("Ошибка SDL: {0}", SDL.SDL_GetError());
+            logger.Error("{Message} SDL error: {Error}", message, SDL.SDL_GetError());
         }
 
         private Rectangle GetViewportRect()

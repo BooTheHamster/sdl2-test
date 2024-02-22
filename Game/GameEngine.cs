@@ -2,39 +2,43 @@
 using Sdl2Test.Drawables;
 using Sdl2Test.Interfaces;
 using Sdl2Test.Models;
-using Serilog;
 using System.Collections.Generic;
+using Sdl2Test.Services;
 
 namespace Sdl2Test.Game
 {
     public sealed class GameEngine
     {
+        /// <summary>
+        /// Интевал координат в котором генерируются звездные системы.
+        /// </summary>
+        private const double MinCoordinate = -50;
+        private const double MaxCoordinate = 50;
+
         private readonly IGraphicsService _graphicsService;
         private readonly GameEntityUpdateEngine _engine;
-        private readonly ILogger _logger;
         private readonly StarSpriteProvider _starSpriteProvider;
-        private readonly GalaxyGenerator _galaxyGenerator = new();
+        private readonly IDrawCoordinatesConverter _drawCoordinatesConverter;
         private IEnumerable<StarSystem> _galaxyStarSystems;
 
         public GameEngine(
             IGraphicsService graphicsService,
-            GameEntityUpdateEngine engine,
-            ILogger logger)
+            GameEntityUpdateEngine engine)
         {
             _graphicsService = graphicsService;
             _engine = engine;
-            _logger = logger;
             _starSpriteProvider = new StarSpriteProvider(_graphicsService);
+            _drawCoordinatesConverter = new DrawCoordinatesConverter(graphicsService, MinCoordinate, MaxCoordinate);
         }
 
         public void CreateNew()
         {
-            _galaxyStarSystems = _galaxyGenerator.CreateGalaxy(GalaxySize.M, _logger);
+            _galaxyStarSystems = GalaxyGenerator.CreateGalaxy(GalaxySize.XS, MinCoordinate, MaxCoordinate);
 
             foreach (var starSystem in _galaxyStarSystems)
             {
                 var sprite = _starSpriteProvider.GetSprite(starSystem.StarClass);
-                var drawable = new StarSystemDrawable(starSystem, sprite);
+                var drawable = new StarSystemDrawable(starSystem, sprite, _drawCoordinatesConverter);
 
                 _graphicsService.Add(drawable);
             }

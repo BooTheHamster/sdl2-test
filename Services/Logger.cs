@@ -1,5 +1,4 @@
 ﻿using Serilog;
-using System;
 using System.IO;
 
 namespace Sdl2Test.Services;
@@ -19,14 +18,25 @@ public static class LoggerFactory
             return _logger;
         }
 
-        var logFolderName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
-        var fullLogFilePath = "";
-
+#if DEBUG
+        var fullLogFilePath = Path.Combine("./", LogFileName);
+#else
+        string logFolderName;
+        string logFolderFullPath;
+        
         if (OperatingSystem.IsWindows)
         {
-            var userAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            fullLogFilePath = Path.Combine(userAppDataPath, logFolderName ?? string.Empty, LogFileName);
+            logFolderFullPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            logFolderName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
         }
+        else
+        {
+            logFolderFullPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            logFolderName = $".{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}";
+        }
+        
+        var fullLogFilePath = Path.Combine(logFolderFullPath, logFolderName ?? string.Empty, LogFileName);
+#endif
 
         var configuration = new LoggerConfiguration()
             .WriteTo

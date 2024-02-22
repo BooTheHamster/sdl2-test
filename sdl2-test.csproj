@@ -43,6 +43,18 @@
     <Content Include="Assets\o-class-star.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Remove="Assets\brown-dwarf-class-star.png" />
+    <Content Include="Assets\brown-dwarf-class-star.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Assets\red-giant-class-star.png" />
+    <Content Include="Assets\red-giant-class-star.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Assets\white-dwarf-class-star.png" />
+    <Content Include="Assets\white-dwarf-class-star.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

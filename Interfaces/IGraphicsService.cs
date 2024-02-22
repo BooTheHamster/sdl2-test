@@ -9,12 +9,6 @@ namespace Sdl2Test.Interfaces
     public interface IGraphicsService : IDrawService, IDisposable
     {
         /// <summary>
-        /// Инициализация графической подсистемы.
-        /// </summary>
-        /// <returns>Истина, если графическая подсистема инициализирована успешно.</returns>
-        bool TryInitialize();
-
-        /// <summary>
         /// Создает спрайт.
         /// </summary>
         /// <param name="width">Ширина спрайта в пикселях.</param>
